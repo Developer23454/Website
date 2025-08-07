@@ -1,0 +1,83 @@
+/* styles.css */
+
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Define color palette and text size variables */
+:root {
+  /* Primary brand colors */
+  --color-primary: #eafdf8;
+  --color-secondary: #e5e9ec;
+  --color-third: #ddcad9;
+  --color-fourth: #d1b1cb;
+  --color-fifth: #7c616c;
+
+  /* Hover effects */
+  --content-hover-brightness: 1.2;
+  --text-hover-brightness: 0.5;
+
+  /* Font sizes */
+  --font-size-h1: 2.5rem;
+  --font-size-h2: 2rem;
+  --font-size-h3: 1.5rem;
+  --font-size-p: 1rem;
+  --font-size-small: 0.875rem;
+}
+
+/* Apply text sizes using variables */
+h1 {
+  font-size: var(--font-size-h1);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+}
+
+p {
+  font-size: var(--font-size-p);
+}
+
+.small-text {
+  font-size: var(--font-size-small);
+}
+
+body {
+  background-color: var(--color-secondary);
+  margin: 0;
+  padding: 0;
+}
+
+/* Define dark-mode */
+.dark-mode {
+  /* Primary brand colors */
+  --color-primary: #0c8565;
+  --color-secondary: #3a4751;
+  --color-third: #4d3247;
+  --color-fourth: #492b44;
+  --color-fifth: #251d20;
+
+  /* Hover effects */
+  --content-hover-brightness: 0.5;
+  --text-hover-brightness: 4;
+}
+
+/* only thing that will really stay here... the rest will go to global*/
+input[data-i18n="searchbarPlaceholder"]:focus {
+  outline: none !important; /* kill the default focus ring */
+  box-shadow: 0 0 0 2px #fff; /* draw your own white “ring” */
+  border-color: #fff; /* keep your white border */
+  background-color: rgba(255, 255, 255, 0.05); /* subtle light bg if you like */
+}
+
+/* Base styling for all theme-aware text */
+.theme-text {
+  font-size: var(--font-size-p);
+  color: var(--color-primary);
+  transition: color 0.3s;
+}
