@@ -51,6 +51,30 @@ body {
   background-color: var(--color-secondary);
   margin: 0;
   padding: 0;
+
+  /* base = mobile */
+  font-size: 1rem;
+  line-height: 1.4;
+  margin: 0;
+}
+.container {
+  padding: 16px;
+}
+
+/* simple single-column layout */
+.header,
+.main,
+.footer {
+  width: 100%;
+}
+
+/* bigger screens: two-column layout */
+@media (min-width: 768px) {
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 24px;
+  }
 }
 
 /* Define dark-mode */
