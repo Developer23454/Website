@@ -22,7 +22,7 @@ function createSettingsButton() {
 
   /** Settings Icon */
   const settingsIcon = document.createElement("img");
-  settingsIcon.src = "../assets/images/components/buttons/settings.svg";
+  settingsIcon.src = "assets/images/components/buttons/settings.svg";
   settingsIcon.setAttribute("data-i18n", "settings");
   settingsIcon.alt = t("settings");
   Object.assign(settingsIcon.style, {
@@ -105,4 +105,5 @@ function createSettingsButton() {
 }
 
 createSettingsButton();
+
 
