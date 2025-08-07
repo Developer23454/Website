@@ -54,7 +54,7 @@ function createSettingsButton() {
   /** Settings Link */
   const settingsLink = document.createElement("a");
   settingsLink.classList.add("theme-text");
-  settingsLink.href = "../public/settings/index.html";
+  settingsLink.href = "settings/index.html";
   settingsLink.setAttribute("data-i18n", "settings");
   settingsLink.textContent = t("settings");
   Object.assign(settingsLink.style, {
@@ -66,7 +66,7 @@ function createSettingsButton() {
   /** Account Link */
   const accountLink = document.createElement("a");
   accountLink.classList.add("theme-text");
-  accountLink.href = "../public/account/index.html";
+  accountLink.href = "account/index.html";
   accountLink.setAttribute("data-i18n", "account");
   accountLink.textContent = t("account");
   Object.assign(accountLink.style, {
@@ -105,5 +105,6 @@ function createSettingsButton() {
 }
 
 createSettingsButton();
+
 
 
