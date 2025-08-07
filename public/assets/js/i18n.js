@@ -3,7 +3,7 @@
 let messages = {}; // this holds your current language strings
 
 export async function loadLanguage(langCode) {
-  const res = await fetch(`/public/assets/messages/strings.${langCode}.json`);
+  const res = await fetch(`/assets/messages/strings.${langCode}.json`);
   messages = await res.json();
   updateAllTexts(); // optional: auto-update text in DOM
 }
