@@ -24,7 +24,68 @@ function createBanner() {
   banner.style.transition =
     "left 0.18s ease, top 0.18s ease, transform 0.18s ease";
 
-  const bannerImage = document.createElement("img");
+  // --- REPLACE original bannerImage creation block WITH THIS ---
+  const bannerImagePath = "assets/images/logo/refresh.svg";
+  let bannerImage = document.createElement("div");
+  bannerImage.className = "banner-img";
+  bannerImage.setAttribute("role", "img");
+  bannerImage.setAttribute("aria-label", "Banner");
+  Object.assign(bannerImage.style, {
+    display: "block",
+    height: "7.5rem",
+    maxWidth: "90%",
+    width: "auto",
+    transformOrigin: "center",
+    transition: "transform 1.2s ease-in-out",
+    cursor: "pointer",
+    pointerEvents: "auto",
+  });
+
+  // fetch & inline SVG so strokes/fills that use currentColor work
+  fetch(bannerImagePath)
+    .then((r) => {
+      if (!r.ok) throw new Error("SVG load failed");
+      return r.text();
+    })
+    .then((svgText) => {
+      const doc = new DOMParser().parseFromString(svgText, "image/svg+xml");
+      const svgEl = doc.documentElement;
+      svgEl.removeAttribute("width");
+      svgEl.removeAttribute("height");
+      svgEl.setAttribute("width", "100%");
+      svgEl.setAttribute("height", "100%");
+      // ensure the SVG follows the page color: set container color to the CSS var
+      bannerImage.style.color = "var(--text-color)";
+      // convert inline fill/stroke to currentColor (safe: skip 'none')
+      svgEl.querySelectorAll("*").forEach((el) => {
+        if (el.hasAttribute("stroke") && el.getAttribute("stroke") !== "none") {
+          el.setAttribute("stroke", "currentColor");
+        }
+        if (el.hasAttribute("fill") && el.getAttribute("fill") !== "none") {
+          el.setAttribute("fill", "currentColor");
+        }
+      });
+      bannerImage.appendChild(svgEl);
+    })
+    .catch(() => {
+      // fallback: show <img> if fetch or parsing fails
+      const img = document.createElement("img");
+      img.src = bannerImagePath;
+      img.alt = "Banner";
+      Object.assign(img.style, {
+        maxWidth: "90%",
+        display: "block",
+        transformOrigin: "center",
+        transition: "transform 1.2s ease-in-out",
+        cursor: "pointer",
+        height: "7.5rem",
+        width: "auto",
+      });
+      bannerImage.appendChild(img);
+    });
+  // --- end replacement ---
+
+  /* const bannerImage = document.createElement("img");
   bannerImage.className = "banner-img";
   bannerImage.src = "assets/images/logo/refresh.svg";
   bannerImage.alt = "Banner";
@@ -32,7 +93,7 @@ function createBanner() {
   bannerImage.style.display = "block";
   bannerImage.style.transformOrigin = "center";
   bannerImage.style.transition = "transform 1.2s ease-in-out";
-  bannerImage.style.cursor = "pointer";
+  bannerImage.style.cursor = "pointer"; */
 
   // click/tap rotates (touch-friendly)
   let rotated = false;

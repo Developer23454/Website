@@ -14,13 +14,35 @@ function createSettingsButton() {
     zIndex: "9999",
   });
 
-  const icon = document.createElement("img");
+  /*  const icon = document.createElement("img");
   icon.src = "assets/images/components/buttons/settings.svg";
   icon.alt = t("settings");
   icon.style.width = "50px";
   icon.style.height = "50px";
   icon.style.cursor = "pointer";
   icon.style.transition = "transform 0.5s ease-in-out";
+ */
+
+  const icon = document.createElement("span");
+  icon.className = "settings-icon-mask";
+  Object.assign(icon.style, {
+    display: "inline-block",
+    width: "50px",
+    height: "50px",
+    cursor: "pointer",
+    transition: "transform 0.5s ease-in-out",
+    backgroundColor: "var(--text-color)", // the color we want
+    WebkitMaskImage: "url('assets/images/components/buttons/settings.svg')",
+    WebkitMaskRepeat: "no-repeat",
+    WebkitMaskPosition: "center",
+    WebkitMaskSize: "contain",
+    maskImage: "url('assets/images/components/buttons/settings.svg')",
+    maskRepeat: "no-repeat",
+    maskPosition: "center",
+    maskSize: "contain",
+  });
+  icon.setAttribute("role", "img");
+  icon.setAttribute("aria-label", t("settings"));
 
   const dropdown = document.createElement("div");
   Object.assign(dropdown.style, {

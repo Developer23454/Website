@@ -52,20 +52,64 @@ function createSearchbar(side) {
     input.style.boxShadow = "";
   });
 
-  const icon = document.createElement("img");
-  icon.src = "assets/images/components/searchbars/search.svg";
-  icon.alt = "";
+  // REPLACE WITH (mask-based icon painted by --text-color)
+  const icon = document.createElement("span");
   icon.className = "search-icon";
   icon.setAttribute("aria-hidden", "true");
 
-  icon.style.position = "absolute";
-  icon.style.left = "1rem";
-  icon.style.top = "50%";
-  icon.style.transform = "translateY(-50%)";
-  icon.style.width = "clamp(16px, 2vw, 24px)";
-  icon.style.height = "auto";
-  icon.style.pointerEvents = "none";
-  icon.style.opacity = "0.7";
+  Object.assign(icon.style, {
+    position: "absolute",
+    left: "1rem",
+    top: "50%",
+    transform: "translateY(-50%)",
+    width: "clamp(16px, 2vw, 24px)",
+    height: "clamp(16px, 2vw, 24px)",
+    display: "block",
+    pointerEvents: "none",
+    opacity: "0.7",
+    // color source for the mask:
+    backgroundColor: "var(--text-color)",
+    // use the SVG as a mask (alpha channel of the SVG controls visibility)
+    WebkitMaskImage: "url('assets/images/components/searchbars/search.svg')",
+    WebkitMaskRepeat: "no-repeat",
+    WebkitMaskPosition: "center",
+    WebkitMaskSize: "contain",
+    maskImage: "url('assets/images/components/searchbars/search.svg')",
+    maskRepeat: "no-repeat",
+    maskPosition: "center",
+    maskSize: "contain",
+    // fallback: keep background-size & position consistent
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    backgroundSize: "contain",
+  });
+
+  // prevent pane <a> link from triggering when interacting with the searchbar
+  // allow default on pointer/touch down so the input can be focused by the browser,
+  // but stop propagation so the parent <a> doesn't see the event.
+  ["pointerdown", "touchstart"].forEach((evt) => {
+    input.addEventListener(evt, (e) => {
+      e.stopPropagation();
+      // DO NOT call preventDefault() here — that prevents focus on some browsers/devices
+    });
+  });
+
+  // intercept click to stop navigation, then focus the input explicitly
+  input.addEventListener("click", (e) => {
+    e.stopPropagation();
+    e.preventDefault(); // stops the anchor from navigating
+    // ensure the input is focused so the user can type immediately
+    input.focus();
+  });
+
+  // prevent Enter from bubbling to the parent anchor (so pressing Enter won't trigger navigation)
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.stopPropagation();
+      // optional: e.preventDefault(); // uncomment if you don't want any default form behavior
+      // trigger search handling here if needed
+    }
+  });
 
   wrapper.addEventListener("pointerenter", (e) => {
     wrapper.style.transform = "scale(1.08)";

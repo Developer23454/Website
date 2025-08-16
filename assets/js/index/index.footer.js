@@ -32,15 +32,44 @@ function createFooter() {
   profiles.className = "profiles";
 
   for (let i = 1; i <= 5; i++) {
-    const img = document.createElement("img");
-    img.style.width = "60px";
-    img.style.height = "60px";
-    img.style.borderRadius = "50%";
-    img.style.objectFit = "cover";
-    img.style.border = "2px solid #fff";
-    img.src = "assets/images/components/profilepictures/user.svg";
-    img.alt = `Profile ${i}`;
-    profiles.appendChild(img);
+    const avatar = document.createElement("span");
+
+    // accessible name (replaces img.alt)
+    avatar.setAttribute("role", "img");
+    avatar.setAttribute("aria-label", `Profile ${i}`);
+
+    // inline styles (keeps your style pattern)
+    Object.assign(avatar.style, {
+      display: "inline-block",
+      width: "60px",
+      height: "60px",
+      borderRadius: "50%",
+      boxSizing: "border-box",
+      // color source for the mask — this is the variable you asked for:
+      backgroundColor: "var(--text-color)",
+      // white border like your original img had
+      border: "2px solid #fff",
+      // ensure the mask is centered and scaled
+      WebkitMaskImage:
+        "url('assets/images/components/profilepictures/user.svg')",
+      WebkitMaskRepeat: "no-repeat",
+      WebkitMaskPosition: "center",
+      WebkitMaskSize: "contain",
+      maskImage: "url('assets/images/components/profilepictures/user.svg')",
+      maskRepeat: "no-repeat",
+      maskPosition: "center",
+      maskSize: "contain",
+      // keep pointer semantics consistent if these will be clickable later
+      cursor: "default",
+      // optional: preserve a little fallback background in case mask isn't supported
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+      backgroundSize: "contain",
+      // small accessibility / layout tweak
+      overflow: "hidden",
+    });
+
+    profiles.appendChild(avatar);
   }
 
   footer.appendChild(title);
