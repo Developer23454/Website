@@ -1,19 +1,14 @@
 // assets/js/index/index.selectlanguagebutton.js
 
-console.log(
-  "✔️ This is inside the index.selectlanguagebutton.js script! Therefore is has loaded!"
-);
-
-// Pull in the translator function from your i18n.js
 import { t, loadLanguage } from "../i18n.js";
 
 function createSelectLanguageButton() {
-  const buttonWrapper = document.getElementById("button-wrapper");
+  const wrapper = document.getElementById("button-wrapper");
+  if (!wrapper) return;
 
-  /** Select Language Button */
-  const selectLanguage = document.createElement("select");
-  selectLanguage.classList.add("theme-text");
-  Object.assign(selectLanguage.style, {
+  const select = document.createElement("select");
+  select.classList.add("theme-text");
+  Object.assign(select.style, {
     appearance: "none",
     WebkitAppearance: "none",
     MozAppearance: "none",
@@ -23,37 +18,29 @@ function createSelectLanguageButton() {
     border: "none",
     borderRadius: "30px",
     backgroundColor: "var(--color-fourth)",
-    cursor: "pointer",
-    color: "var(--color-primary)",
   });
 
-  // hover effects
-  selectLanguage.addEventListener("mouseenter", () => {
-    selectLanguage.style.filter = "var(--content-hover-brightness)";
+  select.addEventListener("pointerenter", (e) => {
+    select.style.filter = "var(--content-hover-brightness)";
+    select.style.opacity = "0.6";
   });
-  selectLanguage.addEventListener("mouseleave", () => {
-    selectLanguage.style.filter = "";
+  select.addEventListener("pointerleave", (e) => {
+    select.style.filter = "";
+    select.style.opacity = "1";
   });
 
-  // language options
   ["en", "de"].forEach((code) => {
     const opt = document.createElement("option");
     opt.value = code;
     opt.textContent = code === "en" ? "English" : "Deutsch";
-    selectLanguage.appendChild(opt);
+    select.appendChild(opt);
   });
 
-  // change language on select
-  selectLanguage.addEventListener("change", (e) => {
-    loadLanguage(e.target.value);
-  });
-
-  // load default language on first load
+  select.addEventListener("change", (e) => loadLanguage(e.target.value));
   loadLanguage("en");
 
-  buttonWrapper.appendChild(selectLanguage);
-
-  console.log("✔️ Select Language Button got created!");
+  wrapper.appendChild(select);
+  console.log("✔️ Select Language Button created!");
 }
 
 createSelectLanguageButton();

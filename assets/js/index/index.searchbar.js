@@ -1,108 +1,94 @@
 // assets/js/index/index.searchbar.js
 
-console.log(
-  "✔️ This is inside the index.searchbar.js script! Therefore is has loaded!"
-);
-
-// Pull in the translator function from your i18n.js
 import { t } from "../i18n.js";
 
 const placeholderStyle = document.createElement("style");
 placeholderStyle.textContent = `
-  .searchbar::placeholder {
-    color: var(--color-primary);
-    opacity: 1;
-  }
+  .searchbar::placeholder { color: currentColor; opacity: 0.7; }
 `;
 document.head.appendChild(placeholderStyle);
 
 function createSearchbar(side) {
-  const leftPaneContent = document.getElementById("left-pane-content");
-  const rightPaneContent = document.getElementById("right-pane-content");
-
-  let content;
-  if (side === "left") {
-    content = leftPaneContent;
-  } else if (side === "right") {
-    content = rightPaneContent;
-  } else {
-    console.error("createSearchbar: invalid side:", side);
-    return;
-  }
-
+  const content = document.getElementById(`${side}-pane-content`);
   if (!content) {
-    console.error("createSearchbar: required element for", side, "not found");
+    console.error("createSearchbar: pane-content for", side, "not found");
     return;
   }
 
-  /** Searchbar Wrapper */
-  const searchbarWrapper = document.createElement("div");
-  Object.assign(searchbarWrapper.style, {
-    position: "relative",
-    width: "80%",
-    maxWidth: "400px",
-    transition: "transform var(--transition-fast)",
+  const wrapper = document.createElement("div");
+  wrapper.className = "searchbar-wrapper";
+
+  wrapper.style.position = "relative";
+  wrapper.style.width = "100%";
+  wrapper.style.maxWidth = "400px";
+  wrapper.style.background = "transparent";
+  wrapper.style.transition = "transform 160ms ease";
+  wrapper.style.margin = "0 auto";
+
+  const input = document.createElement("input");
+  input.classList.add("searchbar");
+  input.classList.add("theme-text");
+  input.type = "text";
+
+  input.style.minWidth = "0"; // prevent overflow in flexbox
+  input.style.width = "clamp(180px, 100%, 10000px)";
+  input.style.boxSizing = "border-box";
+  input.style.padding =
+    "clamp(10px, 2.5vw, 16px) clamp(16px, 3vw, 20px) clamp(10px, 2.5vw, 16px) clamp(40px, 6vw, 48px)";
+  input.style.fontSize = "clamp(1.2rem, 2.5vw, 2rem)";
+  input.style.border = "1px solid currentColor";
+  input.style.borderRadius = "2rem";
+  input.style.background = "transparent";
+  input.style.transition = "border-color 0.2s ease";
+
+  input.setAttribute("data-i18n", "searchbarPlaceholder");
+  input.placeholder = t("searchbarPlaceholder");
+  input.addEventListener("focus", () => {
+    input.style.outline = "none";
+    input.style.boxShadow = "0 0 0 2px var(--color-primary)";
+    input.style.borderColor = "var(--text-color)";
+  });
+  input.addEventListener("blur", () => {
+    input.style.boxShadow = "";
   });
 
-  /** Searchbar Input */
-  const searchbar = document.createElement("input");
-  searchbar.classList.add("searchbar");
-  searchbar.type = "text";
-  searchbar.setAttribute("data-i18n", "searchbarPlaceholder");
-  searchbar.placeholder = t("searchbarPlaceholder");
-  Object.assign(searchbar.style, {
-    width: "100%",
-    padding: "1rem 1rem 1rem 3rem",
-    fontSize: "2rem",
-    border: "1px solid var(--color-primary)",
-    borderRadius: "2rem",
-    background: "inherit",
-    color: "var(--color-primary)",
-    transition: "border-color 0.2s ease",
+  const icon = document.createElement("img");
+  icon.src = "assets/images/components/searchbars/search.svg";
+  icon.alt = "";
+  icon.className = "search-icon";
+  icon.setAttribute("aria-hidden", "true");
+
+  icon.style.position = "absolute";
+  icon.style.left = "1rem";
+  icon.style.top = "50%";
+  icon.style.transform = "translateY(-50%)";
+  icon.style.width = "clamp(16px, 2vw, 24px)";
+  icon.style.height = "auto";
+  icon.style.pointerEvents = "none";
+  icon.style.opacity = "0.7";
+
+  wrapper.addEventListener("pointerenter", (e) => {
+    wrapper.style.transform = "scale(1.08)";
+  });
+  wrapper.addEventListener("pointerleave", (e) => {
+    wrapper.style.transform = "scale(1)";
   });
 
-  /** Search Icon */
-  const searchIcon = document.createElement("img");
-  searchIcon.src = "assets/images/components/searchbars/search.svg";
-  searchIcon.alt = "";
-  searchIcon.className = "search-icon";
-  searchIcon.setAttribute("aria-hidden", "true");
-  Object.assign(searchIcon.style, {
-    position: "absolute",
-    left: "1rem",
-    top: "50%",
-    transform: "translateY(-50%)",
-    width: "2rem",
-    height: "2rem",
-    pointerEvents: "none",
-    transition: "opacity 0.2s ease",
-  });
+  wrapper.append(input, icon);
+  content.appendChild(wrapper);
 
-  // hover effects
-  searchbarWrapper.addEventListener("mouseenter", () => {
-    searchbarWrapper.style.transform = "scale(1.08)";
-  });
-  searchbarWrapper.addEventListener("mouseleave", () => {
-    searchbarWrapper.style.transform = "scale(1)";
-  });
-
-  // focus effect
-  searchbar.addEventListener("focus", () => {
-    searchbar.style.outline = "none";
-    searchbar.style.boxShadow = "0 0 0 2px var(--color-primary)";
-    searchbar.style.borderColor = "var(--color-primary)";
-  });
-
-  // blur effect
-  searchbar.addEventListener("blur", () => {
-    searchbar.style.boxShadow = ""; // remove on blur
-  });
-
-  searchbarWrapper.append(searchbar, searchIcon);
-  content.appendChild(searchbarWrapper);
-
-  console.log(`✔️ Searchbar got created in the ${side} pane`);
+  console.log(`✔️ Searchbar created in the ${side} pane`);
 }
 
 createSearchbar("left");
 createSearchbar("right");
+
+function adjustSearchbarSpacing() {
+  const wrappers = document.querySelectorAll(".searchbar-wrapper");
+  const isDesktop = window.innerWidth >= 768;
+  wrappers.forEach((w) => {
+    w.style.margin = isDesktop ? "8px 0" : "12px 0";
+  });
+}
+adjustSearchbarSpacing();
+window.addEventListener("resize", adjustSearchbarSpacing, { passive: true });

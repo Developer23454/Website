@@ -8,11 +8,12 @@ html {
 /* Define color palette and text size variables */
 :root {
   /* Primary brand colors */
-  --color-primary: #eafdf8;
-  --color-secondary: #e5e9ec;
-  --color-third: #ddcad9;
-  --color-fourth: #d1b1cb;
-  --color-fifth: #7c616c;
+  --color-primary: #caf0f8;
+  --color-secondary: #ade8f4;
+  --color-third: #90e0ef;
+  --color-fourth: #48cae4;
+  --color-fifth: #00b4d8;
+  --text-color: #000000;
 
   /* Hover effects */
   --content-hover-brightness: 1.2;
@@ -48,7 +49,7 @@ p {
 }
 
 body {
-  background-color: var(--color-secondary);
+  background-color: var(--color-primary);
   margin: 0;
   padding: 0;
 
@@ -80,11 +81,12 @@ body {
 /* Define dark-mode */
 .dark-mode {
   /* Primary brand colors */
-  --color-primary: #0c8565;
-  --color-secondary: #3a4751;
-  --color-third: #4d3247;
-  --color-fourth: #492b44;
-  --color-fifth: #251d20;
+  --color-primary: #03045e;
+  --color-secondary: #023e8a;
+  --color-third: #0077b6;
+  --color-fourth: #0096c7;
+  --color-fifth: #00b4d8;
+  --text-color: #ffffff;
 
   /* Hover effects */
   --content-hover-brightness: 0.5;
@@ -102,6 +104,32 @@ input[data-i18n="searchbarPlaceholder"]:focus {
 /* Base styling for all theme-aware text */
 .theme-text {
   font-size: var(--font-size-p);
-  color: var(--color-primary);
+  color: var(--text-color);
   transition: color 0.3s;
+}
+
+/* -----Preliminary----- */
+
+/* Pane safety: ensure children don't break pane box */
+#pane-wrapper,
+#left-pane,
+#right-pane {
+  box-sizing: border-box;
+}
+
+/* Prevent images/media inside panes from exceeding width */
+#left-pane img,
+#right-pane img,
+#left-pane video,
+#right-pane video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Make all direct children behave (prevent accidental fixed widths) */
+#left-pane > *,
+#right-pane > * {
+  max-width: 100%;
+  box-sizing: border-box;
 }

@@ -51,5 +51,3 @@ function createHeader() {
 }
 
 document.addEventListener("DOMContentLoaded", createHeader);
-
-

@@ -1,17 +1,13 @@
-console.log(
-  "✔️ This is inside the index.darkmodebutton.js script! Therefore is has loaded!"
-);
-
-// Pull in the translator function from your i18n.js
+// assets/js/index/index.darkmodebutton.js
 import { t } from "../i18n.js";
 
 function createDarkModeButton() {
-  const buttonWrapper = document.getElementById("button-wrapper");
+  const wrapper = document.getElementById("button-wrapper");
+  if (!wrapper) return;
 
-  /** Dark Mode Button */
-  const darkModeButton = document.createElement("button");
-  darkModeButton.classList.add("theme-text");
-  Object.assign(darkModeButton.style, {
+  const btn = document.createElement("button");
+  btn.classList.add("theme-text");
+  Object.assign(btn.style, {
     display: "inline-block",
     padding: "0.5rem 1rem",
     border: "none",
@@ -21,40 +17,27 @@ function createDarkModeButton() {
     transition: "opacity 0.3s",
   });
 
-  // Set attributes from the <button> tag
-  darkModeButton.setAttribute("data-i18n", "darkMode");
-  darkModeButton.setAttribute("data-i18n", "lightMode");
-  darkModeButton.textContent = t("darkMode");
+  btn.setAttribute("data-i18n", "darkMode");
+  btn.textContent = t("darkMode");
 
-  // hover effects
-  darkModeButton.addEventListener("mouseenter", () => {
-    darkModeButton.style.filter = "var(--content-hover-brightness)";
+  btn.addEventListener("pointerenter", (e) => {
+    btn.style.filter = "var(--content-hover-brightness)";
+    btn.style.opacity = "0.6";
   });
-  darkModeButton.addEventListener("mouseleave", () => {
-    darkModeButton.style.filter = "";
+  btn.addEventListener("pointerleave", (e) => {
+    btn.style.filter = "";
+    btn.style.opacity = "1";
   });
 
-  // click effects
   let darkMode = false;
-  darkModeButton.addEventListener("click", () => {
+  btn.addEventListener("click", () => {
     darkMode = !darkMode;
     document.documentElement.classList.toggle("dark-mode", darkMode);
-
-    // change button text/icon
-    darkModeButton.textContent = darkMode ? t("lightMode") : t("darkMode");
-
-    // update button background color to contrast theme
-    /*     darkModeButton.style.backgroundColor = darkMode
-      ? "var(--color-secondary)"
-      : "var(--color-fourth)";
-    darkModeButton.style.color = darkMode
-      ? "var(--color-primary)"
-      : "var(--color-fifth)"; */
+    btn.textContent = darkMode ? t("lightMode") : t("darkMode");
   });
 
-  buttonWrapper.appendChild(darkModeButton);
-
-  console.log("✔️ Dark Mode Button got created!");
+  wrapper.appendChild(btn);
+  console.log("✔️ Dark Mode Button created!");
 }
 
 createDarkModeButton();
